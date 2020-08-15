@@ -1,0 +1,22 @@
+variables:
+  host: localhost
+
+jobs:
+- job: jmeter
+  pool:
+    vmImage: ubuntu-latest
+  displayName: Run JMeter tests
+  steps:
+  - task: Bash@3
+    displayName: Execute JMeter tests
+    inputs:
+      targetType: filePath
+      filePath: 'jmeter/test.sh'
+      arguments: '"" Kiwirail.jmx $(host)'
+      workingDirectory: jmeter
+      failOnStderr: false
+  - task: PublishPipelineArtifact@1
+    displayName: Publish JMeter Report
+    inputs:
+      targetPath: jmeter/report
+      artifact: jmeter
